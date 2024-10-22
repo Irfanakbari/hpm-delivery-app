@@ -4,8 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:palestine_first_run/palestine_first_run.dart';
 
-import 'screen/homepage.dart';
-import 'screen/ip_change.dart';
 import 'screen/login.dart';
 
 void main() {

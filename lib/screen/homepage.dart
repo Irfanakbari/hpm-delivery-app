@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
           );
-        await Get.off(const Login());
+        await Get.off(()=>const Login());
       // });
     } catch (e) {
       Fluttertoast.showToast(
@@ -162,31 +162,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       SizedBox(width: 8), // Jarak antara ikon dan teks
                       Text(
                         'Logout',
-                        style: TextStyle(fontSize: 15.0, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.to(const IpChange());
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent, // Warna tombol 'Ganti IP Server'
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 10),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.settings, // Ganti dengan ikon Settings
-                        size: 20.0,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 8), // Jarak antara ikon dan teks
-                      Text(
-                        'IP Setting',
                         style: TextStyle(fontSize: 15.0, color: Colors.white),
                       ),
                     ],
