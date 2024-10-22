@@ -69,15 +69,15 @@ class _LoginState extends State<Login> {
     if (_formKey.currentState!.validate()) {
       // Kirim permintaan HTTP dengan metode POST
       try {
-        final base = await storage.read(key: '@vuteq-ip');
+        // final base = await storage.read(key: '@vuteq-ip');
         final response = await dio.post(
-            'http://$base/api/auth/login', // Ganti URL sesuai dengan endpoint login Anda
+            'https://api2.vuteq.co.id/v1/auth/login', // Ganti URL sesuai dengan endpoint login Anda
             data: {'username': username, 'password': password},
             options: Options(
-              receiveTimeout: const Duration(milliseconds: 5000),
-              sendTimeout: const Duration(milliseconds: 5000),
+              receiveTimeout: const Duration(milliseconds: 6000),
+              sendTimeout: const Duration(milliseconds: 6000),
             ));
-        await storage.write(key: "@vuteq-token", value: response.data['token']);
+        await storage.write(key: "@vuteq-token", value: response.data['accessToken']);
         Fluttertoast.showToast(
           msg: "Login Berhasil",
           toastLength: Toast.LENGTH_SHORT,
@@ -86,9 +86,10 @@ class _LoginState extends State<Login> {
           textColor: Colors.white,
         );
         await Get.off(const MyHomePage());
-      } catch (e) {
+      } on DioException catch (e) {
+        print(e);
         Fluttertoast.showToast(
-          msg: "Login Gagal",
+          msg: e.response?.data['message'] ?? "Login Gagal",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
           backgroundColor: Colors.red,

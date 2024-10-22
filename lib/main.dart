@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: Obx(() => EasySplashScreen(
+        home:EasySplashScreen(
               logo: Image.asset(
                 'assets/images/logo.png',
                 width: 300,
@@ -65,12 +65,8 @@ class _MyAppState extends State<MyApp> {
               backgroundColor: Colors.grey.shade400,
               showLoader: true,
               loadingText: const Text("Loading..."),
-              navigator: isFirst.value
-                  ? const IpChange()
-                  : isLogin.value
-                      ? const MyHomePage()
-                      : const Login(),
+              navigator: const Login(),
               durationInSeconds: 2,
-            )));
+            ));
   }
 }

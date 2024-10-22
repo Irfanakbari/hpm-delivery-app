@@ -131,16 +131,16 @@ class _ScanState extends State<Scan> {
           key: '@vuteq-token'); // Ubah dengan key cookie yang sesuai
       // Buat header cookie untuk permintaan HTTP
       final headers = {
-        'Cookie': cookie != null ? '@vuteq-1-token=$cookie' : '',
+        'Authorization': cookie != null ? 'Bearer $cookie' : '',
       };
-      final base = await storage.read(key: '@vuteq-ip');
-      var result = await dio.get("http://$base/api/orders/" + kode,
+      // final base = await storage.read(key: '@vuteq-ip');
+      var result = await dio.get("http://10.10.10.10:10000/v1/orders/$kode" ,
           options: Options(
             headers: headers,
             receiveTimeout: const Duration(milliseconds: 5000),
             sendTimeout: const Duration(milliseconds: 5000),
           ));
-      var order = result.data['data'];
+      var order = result.data;
       qrCodeHPM.value = order['part_no'].toString();
       partName.value = order['part_name'].toString();
     } catch (e) {
@@ -157,15 +157,16 @@ class _ScanState extends State<Scan> {
           key: '@vuteq-token'); // Ubah dengan key cookie yang sesuai
       // Buat header cookie untuk permintaan HTTP
       final headers = {
-        'Cookie': cookie != null ? '@vuteq-1-token=$cookie' : '',
+        'Authorization': cookie != null ? 'Bearer $cookie' : '',
       };
       final Map<String, dynamic> postData = {
         'id_part': qrCodeVuteq.value,
-        'pcc': qrPcc.value
+        'pcc': qrPcc.value,
+        'status': 'GAGAL'
       };
 
-      final base = await storage.read(key: '@vuteq-ip');
-      await dio.post('http://$base/api/history/failed',
+      // final base = await storage.read(key: '@vuteq-ip');
+      await dio.post('http://10.10.10.10:10000/v1/scans',
           data: postData,
           options: Options(
             headers: headers,
@@ -177,7 +178,7 @@ class _ScanState extends State<Scan> {
 
       showSuccessAlert('Sukses', 'Data Riwayat Tersimpan', Colors.greenAccent);
     } on DioException catch (e) {
-      showAlert('Error', e.response?.data['data'] ?? 'Gagal Menghubungi Server',
+      showAlert('Error', e.response?.data['message'] ?? 'Gagal Menghubungi Server',
           Colors.redAccent);
     } finally {
       qrCodeHPM.value = '-';
@@ -193,15 +194,16 @@ class _ScanState extends State<Scan> {
           key: '@vuteq-token'); // Ubah dengan key cookie yang sesuai
       // Buat header cookie untuk permintaan HTTP
       final headers = {
-        'Cookie': cookie != null ? '@vuteq-1-token=$cookie' : '',
+        'Authorization': cookie != null ? 'Bearer $cookie' : '',
       };
       final Map<String, dynamic> postData = {
         'id_part': qrCodeVuteq.value,
-        'pcc': qrPcc.value
+        'pcc': qrPcc.value,
+        'status': 'BERHASIL'
       };
       try {
-        final base = await storage.read(key: '@vuteq-ip');
-        await dio.post('http://$base/api/history',
+        // final base = await storage.read(key: '@vuteq-ip');
+        await dio.post('http://10.10.10.10:10000/v1/scans',
             data: postData,
             options: Options(
               headers: headers,
@@ -218,10 +220,11 @@ class _ScanState extends State<Scan> {
         qrCodeVuteq.value = '-';
         qrCodeHPM.value = '-';
       } on DioException catch (e) {
+        print(e.response!.data);
         // Kesalahan jaringan
         showAlert(
             'Error',
-            e.response?.data['data'] ?? 'Kesalahan Jaringan/Server',
+            e.response?.data['message'] ?? 'Kesalahan Jaringan/Server',
             Colors.redAccent);
         qrPcc.value = '-';
         qrCodeVuteq.value = '-';

@@ -25,24 +25,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _logout() async {
     try {
-      final base = await storage.read(key: '@vuteq-ip');
-      await dio
-          .get('http://$base/api/auth/logout',
-              options: Options(
-                receiveTimeout: const Duration(milliseconds: 5000),
-                sendTimeout: const Duration(milliseconds: 5000),
-              ))
-          .then((value) async {
-        Fluttertoast.showToast(
-          msg: "Logout Berhasil",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-        );
+      // final base = await storage.read(key: '@vuteq-ip');
+      // await dio
+      //     .get('http://$base/api/auth/logout',
+      //         options: Options(
+      //           receiveTimeout: const Duration(milliseconds: 5000),
+      //           sendTimeout: const Duration(milliseconds: 5000),
+      //         ))
+      //     .then((value) async {
+      //   Fluttertoast.showToast(
+      //     msg: "Logout Berhasil",
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.BOTTOM,
+      //     backgroundColor: Colors.green,
+      //     textColor: Colors.white,
+      //   );
         await storage.delete(key: "@vuteq-token");
+          Fluttertoast.showToast(
+            msg: "Logout Berhasil",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+          );
         await Get.off(const Login());
-      });
+      // });
     } catch (e) {
       Fluttertoast.showToast(
         msg: "Logout Gagal",
